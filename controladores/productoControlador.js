@@ -8,7 +8,6 @@ export const muestraProductos = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
-
 export const muestraProductoPorId = async (req, res) => {
     try {
         const { id } = req.params;

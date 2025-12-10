@@ -57,10 +57,11 @@ function Footer() {
                             <PiStarDuotone /> Paola Tania Gutierrez Apaza
                         </li>
                         <li className="flex items-center gap-2 text-gray-500 text-md pb-1 font-semibold hover:text-blue-600 cursor-pointer">
-                            <PiStarDuotone />
+                            <PiStarDuotone /> Felipe Alessandro Limachi Colque
+
                         </li>
                         <li className="flex items-center gap-2 text-gray-500 text-md pb-1 font-semibold hover:text-blue-600 cursor-pointer">
-                            <PiStarDuotone />
+                            <PiStarDuotone /> Herlan Mauricio Cerruto Salazar
                         </li>
 
                     </ul>

@@ -5,7 +5,7 @@ const { pool } = require('../config/database');
 const { checkPasswordStrength } = require('../utils/passwordValidator');
 
 class AuthController {
-  // Generar CAPTCHA
+
   static async getCaptcha(req, res) {
     try {
       const captcha = svgCaptcha.create({
@@ -15,7 +15,7 @@ class AuthController {
         background: '#f97316'
       });
 
-      // Guardar en sesión
+
       req.session.captcha = captcha.text;
 
       res.type('svg');
@@ -25,12 +25,12 @@ class AuthController {
     }
   }
 
-  // Registro de usuario
+
   static async register(req, res) {
     try {
       const { username, email, password, captcha } = req.body;
 
-      // 1. Validar CAPTCHA
+
       if (!req.session.captcha || captcha !== req.session.captcha) {
         return res.status(400).json({
           error: 'CAPTCHA incorrecto. Intenta de nuevo.'
@@ -45,7 +45,7 @@ class AuthController {
         });
       }
 
-      // 3. Verificar si usuario existe
+
       const [existingUser] = await pool.execute(
         'SELECT id FROM usuarios WHERE email = ? OR username = ?',
         [email, username]
@@ -57,16 +57,16 @@ class AuthController {
         });
       }
 
-      // 4. Encriptar contraseña
+
       const hashedPassword = await bcrypt.hash(password, 10);
 
-      // 5. Insertar usuario
+
       const [result] = await pool.execute(
         'INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)',
         [username, email, hashedPassword]
       );
 
-      // 6. Crear token JWT
+
       const token = jwt.sign(
         {
           id: result.insertId,
@@ -108,19 +108,19 @@ class AuthController {
     }
   }
 
-  // Login de usuario
+
   static async login(req, res) {
     try {
       const { username, password, captcha } = req.body;
 
-      // 1. Validar CAPTCHA
+
       if (!req.session.captcha || captcha !== req.session.captcha) {
         return res.status(400).json({
           error: 'CAPTCHA incorrecto. Intenta de nuevo.'
         });
       }
 
-      // 2. Buscar usuario por username o email
+
       const [users] = await pool.execute(
         'SELECT * FROM usuarios WHERE username = ? OR email = ?',
         [username, username]
@@ -134,7 +134,7 @@ class AuthController {
 
       const user = users[0];
 
-      // 3. Verificar contraseña
+
       const validPassword = await bcrypt.compare(password, user.password);
       if (!validPassword) {
         return res.status(401).json({
@@ -167,7 +167,7 @@ class AuthController {
         { expiresIn: '24h' }
       );
 
-      // 7. Registrar log de acceso
+
       await AccessLog.create({
         usuario_id: user.id,
         event_type: 'login',
@@ -176,7 +176,7 @@ class AuthController {
         browser: req.headers['user-agent'] || 'Desconocido'
       });
 
-      // 8. Limpiar CAPTCHA de la sesión
+
       delete req.session.captcha;
 
       res.json({
@@ -197,10 +197,10 @@ class AuthController {
     }
   }
 
-  // Logout
+
   static async logout(req, res) {
     try {
-      // Registrar log de logout
+
       await AccessLog.create({
         usuario_id: req.user.id,
         event_type: 'logout',
@@ -218,7 +218,7 @@ class AuthController {
     }
   }
 
-  // Perfil de usuario
+
   static async getProfile(req, res) {
     try {
       const [users] = await pool.execute(
@@ -236,7 +236,7 @@ class AuthController {
     }
   }
 
-  // Verificar token
+
   static async verifyToken(req, res) {
     try {
       const token = req.header('Authorization')?.replace('Bearer ', '');
@@ -247,7 +247,7 @@ class AuthController {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      // Verificar si usuario aún existe y está activo
+
       const [users] = await pool.execute(
         'SELECT id, username, email, role, is_active FROM usuarios WHERE id = ?',
         [decoded.id]

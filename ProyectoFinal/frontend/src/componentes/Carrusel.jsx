@@ -78,7 +78,7 @@ export default function Carrusel(props) {
                     style={{
                         width: '100%',
                         height: '320px',
-                        // Ajusta sin recortar ni fondos
+
                     }}
                 />
             </div>

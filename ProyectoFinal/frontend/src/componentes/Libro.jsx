@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CardVentas = () => {
-    // Estado para los productos
+
     const [productos, setProductos] = useState([
         {
             id: 1,
@@ -76,7 +76,7 @@ const CardVentas = () => {
         ? productos
         : productos.filter(producto => producto.categoria === categoriaFiltro);
 
-    // Agregar al carrito
+
     const agregarAlCarrito = (producto) => {
         setCarrito(prevCarrito => {
             const existe = prevCarrito.find(item => item.id === producto.id);
@@ -91,20 +91,20 @@ const CardVentas = () => {
         });
     };
 
-    // Eliminar del carrito
+
     const eliminarDelCarrito = (id) => {
         setCarrito(prevCarrito => prevCarrito.filter(item => item.id !== id));
     };
 
-    // Calcular total
+
     const totalCarrito = carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
 
-    // Categorías únicas
+
     const categorias = ['Todas', ...new Set(productos.map(p => p.categoria))];
 
     return (
         <div className="container-fluid py-4">
-            {/* Header */}
+
             <div className="row mb-4">
                 <div className="col-12">
                     <div className="d-flex justify-content-between align-items-center">
@@ -120,7 +120,7 @@ const CardVentas = () => {
             </div>
 
 
-            {/* Filtros */}
+
             <div className="row mb-4">
                 <div className="col-12">
                     <div className="card">
@@ -142,7 +142,7 @@ const CardVentas = () => {
                 </div>
             </div>
 
-            {/* Grid de Productos */}
+
             <div className="row g-4">
                 {productosFiltrados.map(producto => (
                     <div key={producto.id} className="col-xl-3 col-lg-4 col-md-6">
@@ -195,7 +195,7 @@ const CardVentas = () => {
                 ))}
             </div>
 
-            {/* Carrito de Compras */}
+
             {carrito.length > 0 && (
                 <div className="row mt-5">
                     <div className="col-12">
@@ -249,7 +249,7 @@ const CardVentas = () => {
                 </div>
             )}
 
-            {/* Estadísticas */}
+
             <div className="row mt-4">
                 <div className="col-12">
                     <div className="card">

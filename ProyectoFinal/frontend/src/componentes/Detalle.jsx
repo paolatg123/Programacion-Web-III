@@ -12,7 +12,7 @@ const Detalle = () => {
                 className="fixed left-4 bottom-4 w-40 h-auto max-h-80 opacity-80 z-50 object-cover"
             />
 
-            {/* Imagen derecha - SIN SOMBRA Y ENCIMA DE TODO */}
+
             <img
                 src={logo3}
                 alt="Decoración derecha"

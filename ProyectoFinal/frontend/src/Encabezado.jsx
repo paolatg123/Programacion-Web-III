@@ -6,7 +6,7 @@ import { FaCircleUser } from "react-icons/fa6";
 import { Link, Outlet } from 'react-router-dom';
 import { FaReact } from "react-icons/fa";
 import { SiMysql } from "react-icons/si";
-import PerfilModal from './componentes/Perfil'; // Asegúrate de importar el componente modal
+import PerfilModal from './componentes/Perfil';
 
 import {
     Collapse,
@@ -25,7 +25,7 @@ const Encabezado = (args) => {
 
     const toggle = () => setIsOpen(!isOpen);
 
-    // Verificar si el usuario está autenticado
+
     useEffect(() => {
         const checkAuth = () => {
             const user = localStorage.getItem('user');
@@ -38,13 +38,13 @@ const Encabezado = (args) => {
         return () => window.removeEventListener('storage', checkAuth);
     }, []);
 
-    // Manejar clic en el botón de cuenta
+
     const handleClick = (e) => {
         if (isAuthenticated) {
-            e.preventDefault(); // Prevenir navegación
+            e.preventDefault();
             setShowProfileModal(true);
         }
-        // Si no está autenticado, el Link redirigirá a /login normalmente
+
     };
 
     return (
@@ -164,7 +164,7 @@ const Encabezado = (args) => {
                                 <FaCircleUser size={24} />
                                 {isAuthenticated ? 'Mi Cuenta' : 'Iniciar Sesión'}
 
-                                {/* Indicador de sesión activa */}
+
                                 {isAuthenticated && (
                                     <span
                                         className="position-absolute top-0 start-100 translate-middle p-1 bg-success border border-light rounded-circle"

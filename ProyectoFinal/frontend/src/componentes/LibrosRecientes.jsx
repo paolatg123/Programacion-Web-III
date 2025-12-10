@@ -13,7 +13,7 @@ const LibrosRecientes = () => {
                 setLoading(true);
                 setError('');
 
-                // ✅ CORREGIDO: Usando el endpoint correcto que SÍ existe
+
                 const response = await fetch('http://localhost:5000/api/productos');
 
                 if (!response.ok) {
@@ -25,10 +25,10 @@ const LibrosRecientes = () => {
                 console.log('📦 Datos recibidos del backend:', data);
 
                 if (Array.isArray(data)) {
-                    // Tomar los últimos 8 productos (los más recientes)
+
                     const productosOrdenados = [...data]
-                        .sort((a, b) => b.id - a.id) // Ordenar por ID descendente (más reciente primero)
-                        .slice(0, 8); // Tomar solo 8
+                        .sort((a, b) => b.id - a.id)
+                        .slice(0, 8);
 
                     const librosFormateados = productosOrdenados.map(producto => ({
                         id: producto.id,
@@ -58,16 +58,16 @@ const LibrosRecientes = () => {
         obtenerLibrosRecientes();
     }, []);
 
-    // Función para recargar datos
+
     const recargarDatos = () => {
         window.location.reload();
     };
 
-    // Función para probar conexión (usa ruta existente)
+
     const probarConexion = async () => {
         try {
             setLoading(true);
-            const response = await fetch('http://localhost:5000/api/health'); // ✅ Ruta correcta
+            const response = await fetch('http://localhost:5000/api/health');
             const data = await response.json();
             alert(`✅ Conexión exitosa!\nServidor: ${data.status}\nProyecto: ${data.proyecto}`);
         } catch (error) {
@@ -77,7 +77,7 @@ const LibrosRecientes = () => {
         }
     };
 
-    // Si está cargando
+
     if (loading) {
         return (
             <div className="bg-orange-100 rounded-2xl shadow-2xl p-6 text-center">
@@ -92,7 +92,7 @@ const LibrosRecientes = () => {
         );
     }
 
-    // Si hay error
+
     if (error) {
         return (
             <div className="bg-orange-100 rounded-2xl shadow-2xl p-6 text-center">
@@ -126,7 +126,7 @@ const LibrosRecientes = () => {
         );
     }
 
-    // Si no hay libros en la base de datos
+
     if (librosRecientes.length === 0) {
         return (
             <div className="bg-orange-100 rounded-2xl shadow-2xl p-6 text-center">

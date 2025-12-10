@@ -4,7 +4,7 @@ const router = express.Router();
 const usuarioController = require('../controllers/usuarioController');
 const auth = require('../middleware/auth'); // Tu middleware de autenticación
 
-// RUTAS PROTEGIDAS
+
 
 // Todas las rutas requieren autenticación
 router.use(auth);

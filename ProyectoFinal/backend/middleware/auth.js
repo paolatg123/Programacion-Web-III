@@ -11,10 +11,10 @@ const authenticate = async (req, res, next) => {
       });
     }
 
-    // Verificar token
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Verificar si usuario existe y está activo
+
     const [users] = await pool.execute(
       'SELECT id, username, email, role, is_active FROM usuarios WHERE id = ?',
       [decoded.id]
@@ -28,7 +28,7 @@ const authenticate = async (req, res, next) => {
       return res.status(403).json({ error: 'Tu cuenta está desactivada.' });
     }
 
-    // Adjuntar usuario a la request
+
     req.user = {
       id: users[0].id,
       username: users[0].username,

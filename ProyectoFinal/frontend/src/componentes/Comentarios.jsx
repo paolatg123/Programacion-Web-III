@@ -9,21 +9,21 @@ const Comentarios = () => {
     const [usuario, setUsuario] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    // Cargar usuario y comentarios desde la base de datos
+
     useEffect(() => {
         const cargarDatos = async () => {
             try {
-                // Cargar usuario desde localStorage
+
                 const stored = localStorage.getItem("user");
                 if (stored) {
                     setUsuario(JSON.parse(stored));
                 }
 
-                // Cargar comentarios desde la BD
+
                 await cargarComentariosBD();
             } catch (err) {
                 console.error("Error cargando datos:", err);
-                // Solo muestra un mensaje de error, NO datos de ejemplo
+
                 setComentarios([]);
                 alert("No se pudieron cargar los comentarios de la base de datos");
             } finally {
@@ -34,16 +34,16 @@ const Comentarios = () => {
         cargarDatos();
     }, []);
 
-    // Función para cargar comentarios desde la base de datos
+
     const cargarComentariosBD = async () => {
         try {
-            // Si tu endpoint espera productoId, envía 1 para comentarios generales
+
             const productoId = 1;
 
-            // Intenta obtener comentarios por producto
+
             const comentariosBD = await comentarioService.getByProducto(productoId);
 
-            // Si esa ruta no funciona, intenta obtener todos los comentarios
+
             if (!comentariosBD || comentariosBD.length === 0) {
                 const todosComentarios = await comentarioService.getAll();
                 setComentarios(formatComentarios(todosComentarios));
@@ -57,7 +57,7 @@ const Comentarios = () => {
         }
     };
 
-    // Función para formatear comentarios
+
     const formatComentarios = (comentariosBD) => {
         return comentariosBD.map(comentario => ({
             id: comentario.id,
@@ -71,7 +71,7 @@ const Comentarios = () => {
         }));
     };
 
-    // Enviar comentario
+
     const enviarComentario = async () => {
         if (!nuevoComentario.trim()) {
             alert("Por favor, escribe un comentario");
@@ -81,17 +81,17 @@ const Comentarios = () => {
         const nombreUsuario = usuario?.username || "Usuario";
 
         try {
-            // Datos para guardar en la BD (incluyendo productoId si es necesario)
+
             const comentarioData = {
-                productoId: 1, // IMPORTANTE: tu endpoint lo necesita
+                productoId: 1,
                 comentario: nuevoComentario,
                 usuarioId: usuario?.id || null
             };
 
-            // Guardar en la BD
+
             const comentarioGuardado = await comentarioService.create(comentarioData);
 
-            // Crear comentario para mostrar
+
             const comentario = {
                 id: comentarioGuardado.id || Date.now(),
                 nombre: nombreUsuario,
@@ -103,7 +103,7 @@ const Comentarios = () => {
                 }),
             };
 
-            // Agregar al principio de la lista
+
             setComentarios([comentario, ...comentarios]);
             setNuevoComentario("");
             alert("Comentario guardado");
@@ -114,7 +114,7 @@ const Comentarios = () => {
         }
     };
 
-    // Manejar Enter para enviar
+
     const manejarTeclaEnter = (e) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
@@ -122,7 +122,7 @@ const Comentarios = () => {
         }
     };
 
-    // Función para depuración: ver qué datos estamos recibiendo
+
     const debugComentarios = () => {
         console.log("Comentarios actuales:", comentarios);
     };
@@ -150,7 +150,7 @@ const Comentarios = () => {
                 </div>
             </div>
 
-            {/* Botón de depuración (opcional, elimina después) */}
+
             <button
                 onClick={debugComentarios}
                 className="hidden bg-blue-500 text-white p-2 text-xs"

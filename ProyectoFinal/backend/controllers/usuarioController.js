@@ -1,11 +1,10 @@
-// controllers/usuarioController.js
+
 const Usuario = require('../models/usuario');
 
 const usuarioController = {
-    // Obtener perfil del usuario autenticado
     getPerfil: async (req, res) => {
         try {
-            // req.user.id debería venir del middleware auth.js
+
             const usuario = await Usuario.findById(req.user.id);
 
             if (!usuario) {
@@ -15,7 +14,6 @@ const usuarioController = {
                 });
             }
 
-            // No devolver la contraseña
             const { password, ...usuarioSinPassword } = usuario;
 
             res.status(200).json({
@@ -31,12 +29,12 @@ const usuarioController = {
         }
     },
 
-    // Actualizar perfil del usuario
+
     actualizarPerfil: async (req, res) => {
         try {
             const { nombre, email } = req.body;
 
-            // Validar datos
+
             if (!nombre || !email) {
                 return res.status(400).json({
                     success: false,
@@ -44,7 +42,7 @@ const usuarioController = {
                 });
             }
 
-            // Actualizar usuario
+
             const usuarioActualizado = await Usuario.actualizar(req.user.id, {
                 nombre,
                 email
@@ -64,10 +62,10 @@ const usuarioController = {
         }
     },
 
-    // Obtener todos los usuarios (solo admin)
+
     getAllUsuarios: async (req, res) => {
         try {
-            // Verificar si es admin (depende de tu lógica)
+
             if (req.user.rol !== 'admin') {
                 return res.status(403).json({
                     success: false,
@@ -77,7 +75,7 @@ const usuarioController = {
 
             const usuarios = await Usuario.findAll();
 
-            // Remover contraseñas de la respuesta
+
             const usuariosSinPassword = usuarios.map(usuario => {
                 const { password, ...rest } = usuario;
                 return rest;
@@ -97,12 +95,12 @@ const usuarioController = {
         }
     },
 
-    // Eliminar usuario (solo admin o propio usuario)
+
     eliminarUsuario: async (req, res) => {
         try {
             const { id } = req.params;
 
-            // Solo admin puede eliminar otros usuarios
+
             if (req.user.id !== parseInt(id) && req.user.rol !== 'admin') {
                 return res.status(403).json({
                     success: false,

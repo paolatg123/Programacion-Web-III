@@ -74,7 +74,7 @@ const Perfil = ({ isOpen, onClose }) => {
                         <div className="max-w-md mx-auto w-150 h-100 bg-orange-300 rounded-xl shadow-md overflow-hidden md:max-w-2xl">
                             <div className="p-8">
                                 <div className="flex flex-col items-center">
-                                    {/* Imagen de perfil - usando tu GIF */}
+
                                     <div className="relative">
                                         <img
                                             src={extra1}

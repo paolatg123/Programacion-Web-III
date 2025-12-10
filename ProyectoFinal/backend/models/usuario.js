@@ -1,7 +1,7 @@
 const { pool } = require('../config/database');
 
 class Usuario {
-  // Buscar por ID
+
   static async findById(id) {
     const [rows] = await pool.execute(
       'SELECT id, username, email, role, is_active, created_at, last_login FROM usuarios WHERE id = ?',
@@ -10,7 +10,7 @@ class Usuario {
     return rows[0] || null;
   }
 
-  // Buscar por username o email
+
   static async findByUsernameOrEmail(identifier) {
     const [rows] = await pool.execute(
       'SELECT * FROM usuarios WHERE username = ? OR email = ?',
@@ -19,15 +19,15 @@ class Usuario {
     return rows[0] || null;
   }
 
-  // Crear usuario
+
   static async create(userData) {
     const { username, email, password, role = 'cliente' } = userData;
-    
+
     const [result] = await pool.execute(
       'INSERT INTO usuarios (username, email, password, role) VALUES (?, ?, ?, ?)',
       [username, email, password, role]
     );
-    
+
     return { id: result.insertId, username, email, role };
   }
 
@@ -40,7 +40,7 @@ class Usuario {
     return true;
   }
 
-  // Cambiar estado activo/inactivo
+
   static async toggleActive(id, isActive) {
     await pool.execute(
       'UPDATE usuarios SET is_active = ? WHERE id = ?',
@@ -49,7 +49,7 @@ class Usuario {
     return true;
   }
 
-  // Obtener todos los usuarios (admin)
+
   static async getAll() {
     const [rows] = await pool.execute(
       'SELECT id, username, email, role, is_active, created_at, last_login FROM usuarios ORDER BY created_at DESC'
@@ -57,7 +57,7 @@ class Usuario {
     return rows;
   }
 
-  // Obtener estadísticas de usuarios
+
   static async getStats() {
     const [stats] = await pool.execute(`
       SELECT 

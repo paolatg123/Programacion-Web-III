@@ -310,13 +310,13 @@
 
         window.onload = generateCaptcha;
 
-        // ============================================
+
         // CONEXIÓN CON EL BACKEND - REGISTRO
-        // ============================================
+
         async function registrarUsuario(username, email, password) {
             try {
                 console.log('📝 Enviando registro a backend...');
-                
+
                 const response = await fetch('http://localhost:5000/api/auth/register', {
                     method: 'POST',
                     headers: {
@@ -328,9 +328,9 @@
                         password: password
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     console.log('✅ Registro exitoso:', data);
                     return { success: true, data: data };
@@ -338,18 +338,18 @@
                     console.log('❌ Error en registro:', data);
                     return { success: false, error: data.error };
                 }
-                
+
             } catch (error) {
                 console.error('💥 Error de conexión:', error);
                 return { success: false, error: 'Error de conexión con el servidor' };
             }
         }
 
-        // ============================================
+
         // CONEXIÓN CON EL BACKEND - LOGIN
-        // ============================================
+
         async function iniciarSesion(username, password) {
-            try {                
+            try {
                 const response = await fetch('http://localhost:5000/api/auth/login', {
                     method: 'POST',
                     headers: {
@@ -360,124 +360,124 @@
                         password: password
                     })
                 });
-                
+
                 const data = await response.json();
-                
+
                 if (response.ok) {
                     return { success: true, data: data };
                 } else {
                     return { success: false, error: data.error };
                 }
-                
+
             } catch (error) {
                 return { success: false, error: 'Error de conexión' };
             }
         }
 
-        // ============================================
+
         // CONECTAR FORMULARIO DE REGISTRO
-        // ============================================
-        document.getElementById('signUpForm').addEventListener('submit', async function(event) {
+
+        document.getElementById('signUpForm').addEventListener('submit', async function (event) {
             event.preventDefault(); // Evitar envío normal
-            
+
             const username = document.getElementById('reg-username').value;
             const email = document.getElementById('reg-email').value;
             const password = document.getElementById('reg-password').value;
-            
+
             // Verificar que tenga al menos 6 caracteres
             if (password.length < 6) {
                 alert('La contraseña debe tener al menos 6 caracteres');
                 return;
             }
-            
+
             // Mostrar loading
             const registerBtn = document.getElementById('register-btn');
             const originalText = registerBtn.textContent;
             registerBtn.textContent = 'Registrando...';
             registerBtn.disabled = true;
-            
+
             // Llamar a la función de registro
             const resultado = await registrarUsuario(username, email, password);
-            
+
             // Restaurar botón
             registerBtn.textContent = originalText;
             registerBtn.disabled = false;
-            
+
             if (resultado.success) {
                 alert('¡Registro exitoso! Tu usuario ha sido guardado en la base de datos.\n\nAhora puedes iniciar sesión.');
-                
+
                 // Cambiar automáticamente a pestaña de login
                 document.querySelector('.loginBtn').click();
-                
+
                 // Limpiar formulario
                 document.getElementById('reg-username').value = '';
                 document.getElementById('reg-email').value = '';
                 document.getElementById('reg-password').value = '';
-                
+
                 // Limpiar barras de fortaleza
                 document.querySelectorAll('.level-bar').forEach(bar => {
                     bar.className = 'h-1 flex-1 bg-gray-300 rounded-full level-bar';
                 });
                 document.querySelector('.level-text').textContent = '';
-                
+
             } else {
                 alert(`Error: ${resultado.error || 'Error en el registro'}`);
             }
         });
 
-        // ============================================
+
         // CONECTAR FORMULARIO DE LOGIN
-        // ============================================
-        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+
+        document.getElementById('loginForm').addEventListener('submit', async function (event) {
             event.preventDefault();
-            
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            
+
             // Validar CAPTCHA local
             const captchaCode = document.getElementById('captcha-code').textContent;
             const userInput = document.getElementById('captcha-input').value;
-            
+
             if (userInput !== captchaCode) {
                 alert(' El código CAPTCHA es incorrecto');
                 generateCaptcha();
                 return;
             }
-            
+
             // Mostrar loading
             const loginBtn = this.querySelector('button[type="submit"]');
             const originalText = loginBtn.textContent;
             loginBtn.textContent = 'Iniciando sesión...';
             loginBtn.disabled = true;
-            
+
             // Llamar al backend
             const resultado = await iniciarSesion(username, password);
-            
+
             // Restaurar botón
             loginBtn.textContent = originalText;
             loginBtn.disabled = false;
-            
+
             if (resultado.success) {
                 alert('¡Login exitoso! Redirigiendo...');
-                
+
                 // Guardar en localStorage
                 localStorage.setItem('user', JSON.stringify(resultado.data.user));
                 localStorage.setItem('token', resultado.data.token || 'token-simulado');
-                
+
                 // Redirigir a la página principal
                 // Redirigir a la página principal COMPLETA (no solo el iframe)
                 window.top.location.href = 'http://localhost:5173/coleccion';
 
-                
+
             } else {
                 alert(`Error: ${resultado.error || 'Error en el login'}`);
                 generateCaptcha(); // Nuevo CAPTCHA
             }
         });
 
-        // ============================================
+
         // ANIMACIONES (TU CÓDIGO ORIGINAL)
-        // ============================================
+
         const orangeBlock = document.querySelector(".orangeBlock");
         const loginForm = document.querySelector(".loginForm");
         const signUpForm = document.querySelector(".signUpForm");
